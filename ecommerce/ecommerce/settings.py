@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+PROJECT_APPS = [
+    'users',
+    'products',
+]
+
+OTHERS_APPS = [
+    'rest_framework',
+    'corsheaders',
+]
+
+INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + OTHERS_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,6 +91,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+AUTH_USER_MODEL = 'users.User'
 
 
 # Password validation
