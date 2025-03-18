@@ -44,10 +44,12 @@ PROJECT_APPS = [
 ]
 
 OTHERS_APPS = [
-    
+
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + OTHERS_APPS
+
+AUTH_USER_MODEL = "core.Usuario"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
