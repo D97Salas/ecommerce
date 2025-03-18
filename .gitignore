@@ -1,0 +1,61 @@
+# Entorno Virtual
+venv/
+.env
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.spec
+
+# Configuración de IDEs y editores de texto
+.vscode/
+.idea/
+*.iml
+
+# Archivos de configuración local
+*.env
+*.ini
+*.cfg
+
+# Base de Datos
+db.sqlite3
+*.db
+*.sqlite3-journal
+
+# Archivos de logs y dumps
+*.log
+*.out
+*.bak
+*.swp
+*.swo
+*.swn
+*.tmp
+*.pid
+*.seed
+
+# Archivos de caché
+.DS_Store
+Thumbs.db
+
+# Archivos de cobertura de pruebas
+htmlcov/
+.coverage
+*.cover
+*.py,cover
+coverage.xml
+nosetests.xml
+test-results/
+
+# Dependencias de Python
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# Archivos de migraciones de Django (opcionales, si quieres evitar conflictos)
+**/migrations/*.py
+**/migrations/*.pyc
