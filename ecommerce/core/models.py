@@ -3,6 +3,8 @@ from django.db import models
 
 # Usuario personalizado
 class Usuario(AbstractUser):
+    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
+    email = models.EmailField(unique=True)  # El email será el identificador único
     es_admin = models.BooleanField(default=False)
     es_cliente = models.BooleanField(default=True)
 
