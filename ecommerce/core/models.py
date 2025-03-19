@@ -1,16 +1,39 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager
 from django.db import models
 
-# Usuario personalizado
+# Manager personalizado para manejar usuarios sin username
+class UsuarioManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("El email es obligatorio")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        return self.create_user(email, password, **extra_fields)
+
+# Modelo de usuario personalizado
 class Usuario(AbstractUser):
-    username = models.CharField(max_length=150, unique=True, blank=True, null=True)
-    email = models.EmailField(unique=True)  # El email será el identificador único
+    username = None  # Eliminamos el username
+    email = models.EmailField(unique=True)  # Email como identificador único
     es_admin = models.BooleanField(default=False)
     es_cliente = models.BooleanField(default=True)
 
-    # Evitar conflicto de nombres en relaciones inversas
     groups = models.ManyToManyField(Group, related_name="usuario_set", blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name="usuario_set", blank=True)
+
+    USERNAME_FIELD = "email"  # Usamos email para autenticación
+    REQUIRED_FIELDS = []  # No necesitamos username
+
+    objects = UsuarioManager()  # Asignamos nuestro UserManager personalizado
+
+    def __str__(self):
+        return self.email
 
 # Categoría de productos y servicios
 class Categoria(models.Model):
