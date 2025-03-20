@@ -39,8 +39,8 @@ class ArticuloViewSet(viewsets.ModelViewSet):
 
 class ComentarioViewSet(viewsets.ModelViewSet):
     queryset = Comentario.objects.all()
-    serializer_class = ComentarioSerializer 
-    pagination_class = [permissions.IsAuthenticated] # Solo usuarios logueados pueden ver los comentarios
+    serializer_class = ComentarioSerializer
+    permission_classes = [permissions.IsAuthenticated] # Solo usuarios logueados pueden ver los comentarios
 
 
 @api_view(["GET"])
