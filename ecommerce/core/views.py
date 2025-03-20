@@ -11,7 +11,7 @@ from .serializers import (
 
 
 # Vistas para los modelos
-class PoductoViewSet(viewsets.ModelViewSet):
+class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
     permission_classes = [permissions.IsAuthenticated] # Solo usuarios logueados pueden ver los productos
