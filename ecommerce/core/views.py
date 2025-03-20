@@ -14,8 +14,7 @@ from .serializers import (
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
     serializer_class = ProductoSerializer
-    permission_classes = [permissions.IsAuthenticated] # Solo usuarios logueados pueden ver los productos
-
+    permission_classes = [permissions.AllowAny] # Cualquiera puede ver los productos
 class PedidoViewSet(viewsets.ModelViewSet):
     queryset = Pedido.objects.all()
     serializer_class = PedidoSerializer
@@ -29,7 +28,7 @@ class CarritoViewSet(viewsets.ModelViewSet):
 class ArticuloViewSet(viewsets.ModelViewSet):
     queryset = Articulo.objects.all()
     serializer_class = ArticuloSerializer
-    permission_classes = [permissions.IsAuthenticated] # Solo usuarios logueados pueden ver los articulos
+    permission_classes = [permissions.AllowAny] # cualquiera puede ver los articulos
 
 class ComentarioViewSet(viewsets.ModelViewSet):
     queryset = Comentario.objects.all()
