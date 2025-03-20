@@ -1,5 +1,12 @@
 from rest_framework import viewsets, permissions
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from google.auth.transport import requests
+from google.oauth2 import id_token
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Producto, Pedido, Carrito, Articulo, Comentario
 from .serializers import (
     ProductoSerializer,
@@ -36,3 +43,35 @@ class ComentarioViewSet(viewsets.ModelViewSet):
     pagination_class = [permissions.IsAuthenticated] # Solo usuarios logueados pueden ver los comentarios
 
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def obtener_usuario(request):
+    usuario = request.user
+    data = {
+        "id": usuario.id,
+        "email": usuario.email,
+        "es_admin": usuario.es_admin,
+        "es_cliente": usuario.es_cliente,
+    }
+    return Response(data)
+
+@api_view(["POST"])
+def google_login(request):
+    token = request.data.get("token")
+    try:
+        # Verifica el token de Google
+        info = id_token.verify_oauth2_token(token, requests.Request(), settings.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY)
+
+        # Obtener o crear el usuario
+        Usuario = get_user_model()
+        usuario, creado = Usuario.objects.get_or_create(email=info["email"], defaults={"username": info["email"]})
+
+        # Generar token JWT
+        refresh = RefreshToken.for_user(usuario)
+        return Response({
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+        })
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=400)
